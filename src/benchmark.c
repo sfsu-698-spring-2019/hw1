@@ -63,7 +63,6 @@ int main() {
     buf = (double *) malloc(3 * nmax * nmax * sizeof(double));
     if (buf == NULL) die("failed to allocate largest problem size");
 
-
     /* For each test size */
     double start_time, time, naive_time;
     int iterations = 10;

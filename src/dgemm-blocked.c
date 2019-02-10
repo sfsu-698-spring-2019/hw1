@@ -1,4 +1,5 @@
 #include "globals.h"
+
 #define min(a, b) (((a)<(b))?(a):(b))
 
 /* This auxiliary subroutine performs a smaller dgemm operation
