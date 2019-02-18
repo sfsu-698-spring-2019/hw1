@@ -98,7 +98,10 @@ int main() {
             time = wall_time() - start_time;
         }
         // make sure the output is correct, but don't measure time of this
-        if (check(n, C, variation_1) == 0) printf("INVALID OUTPUT");
+        if (check(n, C, variation_1) == 0) {
+            printf("INVALID OUTPUT");
+            exit(1);
+        }
         time = time / iterations;
 
         printf("Variation 1: Naive: %f, Blocked: %f, Size: %i  \n", naive_time, time, n);
