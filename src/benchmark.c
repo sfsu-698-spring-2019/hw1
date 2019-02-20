@@ -4,10 +4,10 @@
 
 #ifdef GETTIMEOFDAY
 #include <sys/time.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <windows.h>
 #else
-
 #include <time.h>
-
 #endif
 
 extern void square_dgemm(int, double *, double *, double *);
@@ -21,6 +21,10 @@ double wall_time() {
     struct timeval t;
     gettimeofday (&t, NULL);
     return 1.*t.tv_sec + 1.e-6*t.tv_usec;
+#elif defined(_WIN32) || defined(WIN32)
+    SYSTEMTIME time;
+    GetSystemTime(&time);
+    return (time.wSecond * 1000) + time.wMilliseconds;
 #else
     struct timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
@@ -34,8 +38,15 @@ void die(const char *message) {
 }
 
 void fill(double *p, int n) {
+#if defined(_WIN32) || defined(WIN32)
+    for (int i = 0; i < n; ++i){
+         double r = (double) rand() / RAND_MAX;
+         p[i] = 2 * r - 1; // Uniformly distributed over [-1, 1]
+    }
+#else
     for (int i = 0; i < n; ++i)
         p[i] = 2 * drand48() - 1; // Uniformly distributed over [-1, 1]
+#endif
 }
 
 void copy(double *from, double *to, int n) {
